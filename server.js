@@ -36,8 +36,10 @@ app.post('/feedback', async (req, res) => {
         }]
       })
     });
-    const data = await response.json();
+   const data = await response.json();
+    console.log('Anthropic response:', JSON.stringify(data));
     if (data.error) {
+      console.error('Anthropic error:', data.error);
       return res.status(500).json({ error: data.error.message });
     }
     const text = data.content?.[0]?.text || '';
@@ -48,7 +50,7 @@ app.post('/feedback', async (req, res) => {
     const feedback = feedbackLine.replace('FEEDBACK:', '').trim();
     res.json({ verdict, feedback });
   } catch (err) {
-    console.error('Server error:', err);
+    console.error('Server error:', err.message, err.stack);
     res.status(500).json({ error: err.message });
   }
 });
