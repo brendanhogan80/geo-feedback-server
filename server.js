@@ -26,7 +26,7 @@ app.post('/feedback', async (req, res) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': process.env.ANTHROPIC_API_KEY,
+        'x-api-key': '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',
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
