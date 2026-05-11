@@ -12,6 +12,9 @@ app.use(cors({
 
 app.options('*', cors());
 app.use(express.json());
+console.log('API key starts with:', process.env.ANTHROPIC_API_KEY?.substring(0, 10));
+
+
 
 app.post('/feedback', async (req, res) => {
   try {
