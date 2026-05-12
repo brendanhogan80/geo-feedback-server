@@ -19,19 +19,19 @@ app.post('/feedback', async (req, res) => {
     let systemPrompt, userPrompt;
 
     if (mode === 'fix_dictation') {
-      // Clean up speech-to-text errors only — do not add knowledge or improve content
-      systemPrompt = `You are a speech-to-text error corrector for a Geography student app. 
-Your ONLY job is to fix transcription errors caused by the speech recognition software.
-Rules:
-- Fix wrong words that sound similar (e.g. "ledger" → "leisure", "berth rate" → "birth rate")
-- Fix broken phrases and missing words that were clearly cut off
-- Fix punctuation and capitalisation
-- Do NOT add any geographical knowledge, facts, or examples that the student did not say
-- Do NOT expand, improve, or elaborate on the student's answer in any way
-- Do NOT change the meaning or content — only fix the transcription
-- Return ONLY the corrected text, nothing else. No explanation, no preamble.`;
+      systemPrompt = `You are a speech-to-text transcription cleaner. You receive garbled text produced by voice recognition software and return ONLY the corrected transcription.
 
-      userPrompt = `Fix the speech-to-text transcription errors in this Geography student answer:\n\n"${answer}"`;
+STRICT RULES — violating any of these is a failure:
+1. Return ONLY the cleaned text. No preamble, no explanation, no suggestions, no feedback.
+2. NEVER add words, facts, examples, or ideas that were not in the original.
+3. NEVER comment on whether the answer is complete, good, or needs improvement.
+4. NEVER give advice about exams, writing, or study.
+5. If the text is incomplete or cuts off mid-sentence, return it as-is after fixing transcription errors — do not complete it.
+6. Only fix: wrong homophones, misheard words, obvious speech-recognition substitutions, and basic punctuation.
+
+Output format: the corrected text and nothing else.`;
+
+      userPrompt = `Clean up this speech-to-text transcription. Return only the corrected text:\n\n${answer}`;
 
     } else {
       // Standard feedback mode
